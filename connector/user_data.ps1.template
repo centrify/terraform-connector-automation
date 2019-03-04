@@ -1,0 +1,34 @@
+<powershell>
+write-output "Running User Data Script"
+write-host "(host) Running User Data Script"
+
+Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force -ErrorAction Ignore
+
+net user Administrator "${admin_pass}"
+wmic useraccount where "name='Administrator'" set PasswordExpires=FALSE
+
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+mkdir c:\\temp -force | out-null
+
+write-host "Downloading and installing AWS CLI"
+Invoke-WebRequest -uri https://s3.amazonaws.com/aws-cli/AWSCLI64.msi -OutFile c:\\temp\\awscli64.msi
+iex "c:\\temp\\awscli64.msi /quiet /norestart /log c:\\temp\\awscli.log"
+
+write-host "Downloading connector..."
+Invoke-WebRequest -uri ${conn_url} -OutFile c:\\temp\\connector_installer.zip
+
+write-host "Extracting installer..."
+mkdir -p C:\\temp\\connector\\
+[System.IO.Compression.ZipFile]::ExtractToDirectory("C:\\temp\\connector_installer.zip", "C:\\temp\\connector\\")
+$installer = (Get-ChildItem -Path C:\Temp\connector\*.exe -File).FullName
+
+write-host "Running installer..."
+iex "$installer /silent"
+Start-Sleep -Seconds 30
+write-host "Registering against ${reg_url} as ${reg_user}"
+& 'C:\Program Files\Centrify\Centrify Connector\Centrify.Cloud.ProxyRegisterCli.exe' user=${reg_user} pass=${reg_pass} url=${reg_url}
+write-host "Starting service..."
+Start-Service adproxy
+
+</powershell>
