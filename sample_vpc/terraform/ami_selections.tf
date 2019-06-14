@@ -13,3 +13,4 @@ data "aws_ami" "windows_ami" {
 
   owners = ["amazon"]
 }
+
