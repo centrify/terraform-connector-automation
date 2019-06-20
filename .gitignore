@@ -9,6 +9,7 @@
 *.key
 *.crt
 *.p12
+*.priv
 
 # No vpn client configs
 *.ovpn
