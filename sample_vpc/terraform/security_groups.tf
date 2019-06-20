@@ -17,6 +17,16 @@ resource "aws_security_group" "cfy_intranet_sg" {
     cidr_blocks = [var.vpc_cidr_block]
   }
 
+  // Troubleshooting, allow RDP by uncommenting this
+  /*
+  ingress {
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "tcp"
+    cidr_blocks = ["your.public.ip.here/32"]
+  }
+  */
+
   egress {
     protocol    = -1
     from_port   = 0
