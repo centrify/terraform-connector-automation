@@ -1,4 +1,10 @@
 Copyright 2019 Centrify Corporation
+
+# PUBLIC ARCHIVE
+
+> ***NOTE***
+> This repo is archived.
+> This is still available under the licensing terms, but is not being actively developed or updated any further. Please see [DelineaXPM](https://github.com/DelineaXPM) for active projects.
  
 This Terraform set of scripts is provided as an example of how to automatically deploy a Centrify Connector within a new VPC. This example will create a VPC across 2 Availability Zones where Centrify Connectors will be created within the Private Subnet in each avilability zone. 
 
